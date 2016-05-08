@@ -1,0 +1,30 @@
+Package: etea
+Title: This package enables the classification of unstructured textual data into
+    a structured, segmented, temporal, document frequency matrix for use as input
+    into predictive modelling systems such as neural networks or state-space models.
+Version: 0.0.0.9000
+Authors@R: person("Christopher", "Kirk", email = "drchriskirk@gmail.com", role = c("aut", "cre"))
+Description: In order to investigate events that involve human behaviour or
+    the interactions between human and organisation such as in clinical treatment
+    systems or capital market transactions, investigators need to examine the
+    content of clinical, case or transaction notes and records. Such examination
+    is possible by the application of methodologies such as feature-extraction,
+    classification and the so-called 'sentiment' valence analysis. These can
+    quantify the attraction or aversion to an event or situation such as the study
+    of the emotional content of documents. This package enables the classification
+    of unstructured textual data into a structured, segmented, temporal frequency
+    matrix for use as input into predictive modelling systems such as neural
+    networks or state-space models.
+Depends:
+    R (>= 3.2.3)
+Imports:
+    quanteda
+Suggests:
+    tm
+License: GPL-3
+LazyData: true
+Collate:
+    'create_q_matrix.R'
+    'classify_etea.R'
+    'etea_features.R'
+RoxygenNote: 5.0.1
