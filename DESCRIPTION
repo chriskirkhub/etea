@@ -16,7 +16,7 @@ Description: In order to investigate events that involve human behaviour or
     matrix for use as input into predictive modelling systems such as neural
     networks or state-space models.
 Depends:
-    R (>= 3.2.2)
+    R (>= 3.2.3)
 Imports:
     quanteda
 Suggests:
