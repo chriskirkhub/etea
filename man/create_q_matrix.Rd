@@ -5,14 +5,14 @@
 \title{Elaborate a Document Frequency Matrix in either quanteda or tm format.}
 \usage{
 create_q_matrix(textColumn, stateNum = NULL, timeNum = NULL,
-  docvaragg = c("null", "s", "t", "st", "ts"), use_stopwords = TRUE,
-  stopwords_language = "english", add_stopwords = NULL,
-  remove_stopwords = NULL, verbose = TRUE, toLower = FALSE,
-  stem = FALSE, removeFeatures = TRUE, language = "english",
-  valuetype = c("glob"), removeNumbers = TRUE, removePunct = TRUE,
-  removeSeparators = TRUE, removeHyphens = TRUE, removeTwitter = FALSE,
-  ngrams = 1L, skip = 0L, concatenator = "_", simplify = FALSE,
-  convert_to_tm = TRUE, ...)
+  docvaragg = c("null", "state", "time", "statetime", "timestate"),
+  use_stopwords = TRUE, stopwords_language = "english",
+  add_stopwords = NULL, remove_stopwords = NULL, verbose = TRUE,
+  toLower = FALSE, stem = FALSE, removeFeatures = TRUE,
+  language = "english", valuetype = c("glob"), removeNumbers = TRUE,
+  removePunct = TRUE, removeSeparators = TRUE, removeHyphens = TRUE,
+  removeTwitter = FALSE, ngrams = 1L, skip = 0L, concatenator = "_",
+  simplify = FALSE, useSentences = FALSE, convert_to_tm = TRUE, ...)
 }
 \arguments{
 \item{textColumn}{character vector containing the text to be analysed; mandatory}
@@ -35,21 +35,21 @@ create_q_matrix(textColumn, stateNum = NULL, timeNum = NULL,
 
 \item{stem}{reduce word length to root; default is FALSE; see: \code{\link[quanteda]{tokenize}}}
 
-\item{removeFeatures}{remove particular features from inbound text as specified in a list; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeFeatures}{remove particular features from inbound text as specified in a list; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{language}{to define local language; default is "english" see: \code{\link[quanteda]}}
+\item{language}{to define local language; default is "english" see: \code{\link{quanteda}}}
 
-\item{valuetype}{to define patterning; default is \code{glob}; see: \code{\link[quanteda]}}
+\item{valuetype}{to define patterning; default is \code{glob}; see: \code{\link{quanteda}}}
 
-\item{removeNumbers}{remove individual numbers from inbound text, (note: numbers already aggregated with characters such as 1st or 2nd are unaffected); default is TRUE; see: \code{\link[quanteda]}}
+\item{removeNumbers}{remove individual numbers from inbound text, (note: numbers already aggregated with characters such as 1st or 2nd are unaffected); default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removePunct}{remove punctuation from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removePunct}{remove punctuation from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeSeparators}{remove separators from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeSeparators}{remove separators from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeHyphens}{remove hyphen characters from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeHyphens}{remove hyphen characters from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeTwitter}{remove twitter api characters from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeTwitter}{remove twitter api characters from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
 \item{ngrams}{integer vector specifying the number of elements to be concatenated in each ngram; default is 1L; see: \code{\link[quanteda]{ngrams}}}
 
@@ -63,27 +63,27 @@ create_q_matrix(textColumn, stateNum = NULL, timeNum = NULL,
 
 \item{...}{Extra arguments, not used}
 
-\item{choice}{of language to determine the content of the basic stopword list; default \code{english}. See \code{\link[quanteda]} for further information.}
+\item{choice}{of language to determine the content of the basic stopword list; default \code{english}. See \code{\link{quanteda}} for further information.}
 
 \item{termNum}{integer specifying the minimum frequency a word is to have been found in the matrix}
 }
 \value{
-a tm-type Document Term sparse Matrix object containing word frequencies with (optionally) a time-series index and a state ID identifier as a data frame.
+optionally a quanteda-type Document Feature Matrix or a tm-type Document Term Matrix object containing word frequencies with (optionally) a time-series index and a state ID identifier as a data frame.
 }
 \description{
-In text investigations it is considered important to consider the use of skip-grams to increase coverage without unduly increasing training size.  In multi-state and decision modelling generally, it is considered important to aggregate documents by state IDs and to return a time series.  This includes use in packages such as neural networks, decision models and in ensemble packages such as \code{\link[RTextTools]}.  This function is a wrapper for the \code{\link[quanteda]} package that elaborates a Document Frequency Matrix and returns it in a \code{\link[tm]} package format for use by other functions.  The function receives arguments that leverage functions within the quanteda package namely docvars, ngrams and skipgrams.  This function is independent but also acts as a feeder to \code{\link[etea]{classify_etea}} and is a wrapper developed with permission, of functions from originals by Ken Benoit and Paul Nulty et al \code{\link[quanteda]}.
+In text investigations it is considered important to consider the use of skip-grams to increase coverage without unduly increasing training size.  In multi-state and decision modelling generally, it is considered important to aggregate documents by state IDs and to return a time series.  This includes use in packages such as neural networks, decision models and in ensemble packages such as \code{\link{RTextTools}}.  This function is a wrapper for the \code{\link{quanteda}} package that elaborates a Document Frequency Matrix and returns it in a \code{\link{tm}} package format for use by other functions.  The function receives arguments that leverage functions within the quanteda package namely docvars, ngrams and skipgrams.  This function is independent but also acts as a feeder to \code{\link[etea]{classify_etea}} and is a wrapper developed with permission, of functions from originals by Ken Benoit and Paul Nulty et al \code{\link{quanteda}}.
 }
 \examples{
 # create dfm using character vector of CaseNotes and aggregated by state for use in a classifier
 ## LOAD ##
-text_df <- read.csv("data/jtr_docs.csv",header=TRUE)
+text_df <- read.csv("data/jtr_docs.csv",header=TRUE, sep=";")
 textColumn<-as.character(text_df$Notes)
 ## CREATE MATRIX ##
 create_q_matrix(textColumn, stateNum=c(1,1,2,3,3), verbose=TRUE, use_stopwords=TRUE, docvaragg="s")
 
 # create dfm using character vector of CaseNotes, states and datetimestamps for use as a time series for nnet or MARSS
 ## LOAD ##
-text_df <- read.csv("data/militant_suffragette_extract.csv",header=TRUE)
+text_df <- read.csv("data/militant_suffragette_extract.csv",header=TRUE, sep=";")
 textColumn<-as.character(text_df$Notes) # typically textual interview or clinical notes
 stateNum<-as.numeric(text_df$stateID) # typically identication of parts of journey/episode
 timeNum<-as.character(text_df$datetimestamp) # typically days since start of journey/episode
@@ -101,7 +101,7 @@ Chris Kirk
 }
 \references{
 \href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,
-D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram 
+D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram
 Modelling."}
 }
 

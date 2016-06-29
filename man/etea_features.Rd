@@ -36,21 +36,21 @@ etea_features(textColumn, stateNum = NULL, timeNum = NULL,
 
 \item{stem}{reduce word length to root; default is FALSE; see: \code{\link[quanteda]{tokenize}}}
 
-\item{removeFeatures}{remove particular features from inbound text as specified in a list; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeFeatures}{remove particular features from inbound text as specified in a list; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{language}{to define local language; default is "english" see: \code{\link[quanteda]}}
+\item{language}{to define local language; default is "english" see: \code{\link{quanteda}}}
 
-\item{valuetype}{to define patterning; default is \code{glob}; see: \code{\link[quanteda]}}
+\item{valuetype}{to define patterning; default is \code{glob}; see: \code{\link{quanteda}}}
 
-\item{removeNumbers}{remove individual numbers from inbound text, (note: numbers already aggregated with characters such as 1st or 2nd are unaffected); default is TRUE; see: \code{\link[quanteda]}}
+\item{removeNumbers}{remove individual numbers from inbound text, (note: numbers already aggregated with characters such as 1st or 2nd are unaffected); default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removePunct}{remove punctuation from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removePunct}{remove punctuation from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeSeparators}{remove separators from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeSeparators}{remove separators from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeHyphens}{remove hyphen characters from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeHyphens}{remove hyphen characters from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeTwitter}{remove twitter api characters from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeTwitter}{remove twitter api characters from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
 \item{ngrams}{integer vector specifying the number of elements to be concatenated in each ngram; default is 1L; see: \code{\link[quanteda]{ngrams}}}
 
@@ -66,7 +66,7 @@ etea_features(textColumn, stateNum = NULL, timeNum = NULL,
 
 \item{...}{Extra arguments, not used}
 
-\item{choice}{of language to determine the content of the basic stopword list; default \code{english}. See \code{\link[quanteda]} for further information.}
+\item{choice}{of language to determine the content of the basic stopword list; default \code{english}. See \code{\link{quanteda}} for further information.}
 }
 \value{
 a word vector.
@@ -76,10 +76,10 @@ This function is a wrapper for a Document Frequency Matrix provided by the funct
 }
 \examples{
 ## LOAD ##
-text_df <- read.csv("data/militant_suffragette_extract.csv",header=TRUE)
+text_df <- read.csv("data/militant_suffragette_extract.csv",header=TRUE, sep=";")
 textColumn<-as.character(text_df$Notes) # typically textual interview or clinical notes
 ## CREATE FEATURES LIST ##
-features_vec <- etea_features(textColumn, termNum=4,verbose=TRUE,use_stopwords=TRUE)
+features_vec <- etea_features(textColumn, termNum=1,verbose=TRUE,use_stopwords=TRUE)
 features_vec
 
 }

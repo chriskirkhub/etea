@@ -2,6 +2,7 @@
 % Please edit documentation in R/classify_etea.R
 \name{classify_etea}
 \alias{classify_etea}
+\title{classifier-leverage function to classify text into groups of categories}
 \usage{
 classify_etea(textColumn, stateNum = NULL, timeNum = NULL,
   docvaragg = "null", use_stopwords = TRUE,
@@ -12,17 +13,17 @@ classify_etea(textColumn, stateNum = NULL, timeNum = NULL,
   dictionary = NULL, removeNumbers = TRUE, removePunct = TRUE,
   removeSeparators = TRUE, removeHyphens = TRUE, removeTwitter = TRUE,
   ngrams = 1L, skip = 0L, concatenator = "_", simplify = FALSE,
-  convert_to_tm = TRUE, algorithm = "bayes", prior = 1, termNum = 1,
-  ...)
+  useSentences = TRUE, convert_to_tm = TRUE, pstrong = 1, pweak = 0.5,
+  termNum = 1, ...)
 }
 \arguments{
 \item{textColumn}{character vector containing the text to be analysed; mandatory}
 
 \item{stateNum}{numeric vector containing identifiers for the condition or state when the document or note was recorded/written that it be correctly allocated in the event of more than one note or record being in a state; default NULL}
 
-\item{timeNum}{numeric verctor containing an index that identifies when the document was recorded/noted to give a temporal record.  This normalises progress and case note recording as a progress through a system.  Typically days or minutes after the system commenced; default NULL}
+\item{timeNum}{numeric vector containing an index that identifies when the document was recorded/noted to give a temporal record.  This normalises progress and case note recording as a progress through a system.  Typically days or minutes after the system commenced; default NULL}
 
-\item{docvaragg}{specifies how the aggregation on docvars is to occur either s stateID only, t timestamp only, st state and timestamp or timestamp and state ; default NULL; Options s, t, st, ts}
+\item{docvaragg}{specifies how the aggregation on docvars is to occur either 'state' stateID only, 'time' timestamp only, 'statetime' state and timestamp or timestamp and state ; default NULL; Options state, time, statetime, timestate}
 
 \item{use_stopwords}{specifies whether stopwords are to be removed from the corpus (TRUE) or not removed, (FALSE).  Users are reminded that system (language-specific) stopwords may need additions or removals to tailor for a specific need; default TRUE}
 
@@ -36,21 +37,21 @@ classify_etea(textColumn, stateNum = NULL, timeNum = NULL,
 
 \item{stem}{reduce word length to root; default is FALSE; see: \code{\link[quanteda]{tokenize}}}
 
-\item{removeFeatures}{remove particular features from inbound text as specified in a list; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeFeatures}{remove particular features from inbound text as specified in a list; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{language}{to define local language; default is "english" see: \code{\link[quanteda]}}
+\item{language}{to define local language; default is "english" see: \code{\link{quanteda}}}
 
-\item{valuetype}{to define patterning; default is \code{glob}; see: \code{\link[quanteda]}}
+\item{valuetype}{to define patterning; default is \code{glob}; see: \code{\link{quanteda}}}
 
-\item{removeNumbers}{remove individual numbers from inbound text, (note: numbers already aggregated with characters such as 1st or 2nd are unaffected); default is TRUE; see: \code{\link[quanteda]}}
+\item{removeNumbers}{remove individual numbers from inbound text, (note: numbers already aggregated with characters such as 1st or 2nd are unaffected); default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removePunct}{remove punctuation from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removePunct}{remove punctuation from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeSeparators}{remove separators from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeSeparators}{remove separators from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeHyphens}{remove hyphen characters from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeHyphens}{remove hyphen characters from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
-\item{removeTwitter}{remove twitter api characters from inbound text; default is TRUE; see: \code{\link[quanteda]}}
+\item{removeTwitter}{remove twitter api characters from inbound text; default is TRUE; see: \code{\link{quanteda}}}
 
 \item{ngrams}{integer vector specifying the number of elements to be concatenated in each ngram; default is 1L; see: \code{\link[quanteda]{ngrams}}}
 
@@ -62,15 +63,13 @@ classify_etea(textColumn, stateNum = NULL, timeNum = NULL,
 
 \item{convert_to_tm}{logical specifying the requirement for the matrix to be returned in the tm TRUE or quanteda FALSE format}
 
-\item{algorithm}{a character string specifying either "FALSE" or "bayes" to require a frequency score or bayesian probability output}
-
-\item{prior}{integer specifying the prior bayesian weighting value}
-
 \item{termNum}{integer specifying the minimum frequency a word is to have been found in the matrix}
 
 \item{...}{Extra arguments, not used}
 
-\item{choice}{of language to determine the content of the basic stopword list; default \code{english}. See \code{\link[quanteda]} for further information.}
+\item{choice}{of language to determine the content of the basic stopword list; default \code{english}. See \code{\link{quanteda}} for further information.}
+
+\item{prior}{integer specifying the prior bayesian weighting value}
 }
 \value{
 a scored, classified matrix of document/note words as categories to provide input into other analytical systems.
@@ -78,19 +77,19 @@ a scored, classified matrix of document/note words as categories to provide inpu
 \examples{
 # create a scored, classified matrix of CaseNotes and aggregated by state for use in further modelling
 ## LOAD ##
-text_df <- read.csv("data/jtr_docs.csv",header=TRUE)
+text_df <- read.csv("data/jtr_docs.csv",header=TRUE, sep=";")
 textColumn<-as.character(text_df$Notes)
 ## CLASSIFY ##
-classify_eta(textColumn, stateNum=c(1,1,2,3,3), verbose=TRUE, use_stopwords=TRUE, docvaragg="s")
+classify_eta(textColumn, stateNum=c(1,1,2,3,3), verbose=TRUE, use_stopwords=TRUE, docvaragg="state")
 
 # create dfm using character vector of CaseNotes, states and datetimestamps for use as a time series for a neural network or MARSS
 ## LOAD ##
-text_df <- read.csv("data/militant_suffragette_extract.csv",header=TRUE)
+text_df <- read.csv("data/militant_suffragette_extract.csv",header=TRUE, sep=";")
 textColumn<-as.character(text_df$Notes) # typically textual interview or clinical notes
-stateNum<-as.numeric(text_df$stateID) # typically identication of parts of journey/episode
-timeNum<-as.character(text_df$datetimestamp) # typically days since start of journey/episode
+statecol<-as.numeric(text_df$stateNum) # typically identication of parts of journey/episode
+timecol<-as.character(text_df$timeNum) # typically days since start of journey/episode
 ## CLASSIFY ##
-etea_df_time <- classify_etea(textColumn, stateNum, timeNum, verbose=TRUE, use_stopwords=TRUE, docvaragg="t")
+etea_df_time <- classify_etea(textColumn, statecol, timecol, verbose=TRUE, use_stopwords=TRUE, docvaragg="time")
 # for MARSS
 ## CONVERT FOR MARSS ##
 etea_matrix <- data.matrix(etea_df_time) # MARSS requires standard data matrix Note timeNum as rownames
