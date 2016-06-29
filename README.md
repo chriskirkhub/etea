@@ -4,10 +4,10 @@ etea (Environment/Thoughts/Emotions/Actions) is an 'R' package that contains fun
 This 'R' package is expected to be of interest to all those who seek to enhance knowledge discovery and to model using unstructured text as the data source.
 
 Typical cases include:
-  behavioural analysis and segmentation studies of markets,
-  scoring of texts for sequencing models or signature channels
+  behavioural analysis and segmentation studies of markets;
+  scoring of texts for sequencing models or signature channels;
   special interest groups and investigations:
     Families with Complex Needs,
     Special Victims Units and Victim Support,
-    Clinical or Treatment Systems
+    Clinical or Treatment Systems.
 
