@@ -10,4 +10,10 @@ Typical cases include:
     Families with Complex Needs,
     Special Victims Units and Victim Support,
     Clinical or Treatment Systems.
+    
+To install 'etea'
+    install.packages("devtools")
+    devtools::install_github("chriskirkhub/etea")
+    
+
 
